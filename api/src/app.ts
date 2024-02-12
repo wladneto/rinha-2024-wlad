@@ -18,11 +18,11 @@ app.use(express.json());
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({
-    message: 'API - Rinha 🦄✨👋🌎🌍🌏✨🦄',
+    message: 'API - Rinha 2024 🦄✨👋🌎🌍🌏✨🦄',
   });
 });
 
-app.use('/api/v1', api);
+app.use('/', api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);

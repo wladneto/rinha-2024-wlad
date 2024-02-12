@@ -6,7 +6,7 @@ import { db } from '../../db'
 const Transacao = z.object({
     valor: z.number(),
     tipo: z.enum(['c', 'd']),
-    descricao: z.string().max(10).min(1)
+    descricao: z.string().min(1).max(10)
 })
 
 const Cliente = z.object({

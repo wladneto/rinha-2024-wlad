@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { TransacaoWithId, Transacao, Transacoes, TransacaoResponse } from './transacoes.model';
+import { TransacaoWithId, Transacao, Transacoes } from './transacoes.model';
 import { InsertOneResult } from 'mongodb';
 
 export async function findAll(req: Request, res: Response<TransacaoWithId[]>, next: NextFunction) {
@@ -12,12 +12,16 @@ export async function findAll(req: Request, res: Response<TransacaoWithId[]>, ne
     }
 }
 
-export async function createOne(req: Request<{}, TransacaoWithId, Transacao>, res: Response<InsertOneResult<TransacaoWithId>>, next: NextFunction) {
-    try {
-        const validateBodyResult = await Transacao.parse(req.body);
-        const insertResult = await Transacoes.insertOne(validateBodyResult);
-        res.json(insertResult);
 
+export async function createOne(req: Request<{}, TransacaoWithId, Transacao>, res: Response<TransacaoWithId>, next: NextFunction) {
+    try {
+        const insertResult = await Transacoes.insertOne(req.body);
+        if (!insertResult.acknowledged) throw new Error('Erro ao inserir transacao.');
+        res.status(201);
+        res.json({
+            _id: insertResult.insertedId,
+            ...req.body,
+        });
     } catch (error) {
         next(error);
     }

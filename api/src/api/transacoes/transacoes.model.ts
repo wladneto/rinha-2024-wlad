@@ -5,7 +5,10 @@ import { db } from '../../db'
 
 export const Transacao = z.object({
     valor: z.number(),
-    tipo: z.string(),  //TO:DO VALIDAR
+    tipo: z.union([
+        z.literal('c'),
+        z.literal('d'),
+    ]),
     //tipo: z.enum(['c', 'd']),
     descricao: z.string().max(10).min(1)
 })
