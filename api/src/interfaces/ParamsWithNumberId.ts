@@ -11,8 +11,8 @@ export const ParamsWithNumberId = z.object({
             return false;
         }
     }, {
-        message: 'Invalid Id',
-    }),
+        message: 'Id must be a number',
+    },),
 });
 
 export type ParamsWithNumberId = z.infer<typeof ParamsWithNumberId>;
