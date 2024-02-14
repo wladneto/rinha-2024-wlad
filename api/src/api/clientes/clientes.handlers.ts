@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { ClienteWithId, Clientes } from './clientes.model';
-import { Transacao } from '../clientes/clientes.model'
+import { Transacao, TransactionResponse, ExtractResponse } from '../clientes/clientes.model'
 import MessageResponse from '../../interfaces/MessageResponse';
-import TransactionResponse from '../../interfaces/TransactionResponse';
 
 type ClientTransactionResponse = TransactionResponse | MessageResponse;
-type ClientExtractResponse = TransactionResponse | MessageResponse;
+type ClientExtractResponse = ExtractResponse | MessageResponse;
 
 export async function findAll(req: Request, res: Response<ClienteWithId[]>, next: NextFunction) {
     try {
@@ -63,10 +62,16 @@ export async function showExtract(req: Request, res: Response<ClientExtractRespo
         if (!client) {
             return res.status(404).json({ 'message': 'Cliente not found' }).send();
         }
+        const date = new Date();
 
         res.status(200);
         res.json({
-            message: 'desenvolva isso - ' + clientid
+            saldo: {
+                total: client.saldo,
+                data_extrato: date.toISOString(),
+                limite: client.limite
+            },
+            ultimas_transacoes: client.transacoes
         })
 
     } catch (error) {
