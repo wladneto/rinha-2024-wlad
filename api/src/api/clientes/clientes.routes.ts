@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as ClientesHandlers from './clientes.handlers';
-import { Transacao } from '../transacoes/transacoes.model';
+import { Transacao } from '../clientes/clientes.model'
 import { validateRequest } from '../../middlewares';
 import { ParamsWithNumberId } from '../../interfaces/ParamsWithNumberId';
 
@@ -21,7 +21,7 @@ router.post(
 )
 
 router.get(
-    ':id/extrato',
+    '/:id/extrato',
     validateRequest({
         params: ParamsWithNumberId
     }),

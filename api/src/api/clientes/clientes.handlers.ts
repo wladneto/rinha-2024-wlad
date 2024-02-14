@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { ClienteWithId, Clientes } from './clientes.model';
-import { Transacao } from '../transacoes/transacoes.model';
+import { Transacao } from '../clientes/clientes.model'
 import MessageResponse from '../../interfaces/MessageResponse';
 import TransactionResponse from '../../interfaces/TransactionResponse';
 
 type ClientTransactionResponse = TransactionResponse | MessageResponse;
+type ClientExtractResponse = TransactionResponse | MessageResponse;
 
 export async function findAll(req: Request, res: Response<ClienteWithId[]>, next: NextFunction) {
     try {
@@ -46,6 +47,26 @@ export async function addTransaction(req: Request, res: Response<ClientTransacti
         res.json({
             'limite': client.limite,
             'saldo': resultTransaction
+        })
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function showExtract(req: Request, res: Response<ClientExtractResponse>, next: NextFunction) {
+    try {
+        let clientid = req.params.id;
+
+        const client = await Clientes.findOne({ clienteid: parseInt(clientid) });
+        // If client doesn't exist, send an error response
+        if (!client) {
+            return res.status(404).json({ 'message': 'Cliente not found' }).send();
+        }
+
+        res.status(200);
+        res.json({
+            message: 'desenvolva isso - ' + clientid
         })
 
     } catch (error) {
