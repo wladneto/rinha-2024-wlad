@@ -6,7 +6,11 @@ import { ParamsWithNumberId } from '../../interfaces/ParamsWithNumberId';
 
 const router = Router();
 
-router.get('/', ClientesHandlers.findAll)
+router.get(
+    '/',
+    ClientesHandlers.findAll
+)
+
 router.post(
     '/:id/transacoes',
     validateRequest({
@@ -16,5 +20,12 @@ router.post(
     ClientesHandlers.addTransaction
 )
 
+router.get(
+    ':id/extrato',
+    validateRequest({
+        params: ParamsWithNumberId
+    }),
+    ClientesHandlers.showExtract
+)
 
 export default router;
