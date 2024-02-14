@@ -34,6 +34,23 @@ describe('POST /clientes/:id/transacoes', () => {
             }),
     );
 
+    it('responds with error - "id" on url is number but does not exist on mongo', async () =>
+        request(app)
+            .post('/clientes/1234567/transacoes')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .send({
+                "valor": 10,
+                "tipo": "d",
+                "descricao": "oi"
+            })
+            .expect('Content-Type', /json/)
+            .expect(404)
+            .then((response) => {
+                expect(response.body).toHaveProperty('message');
+            }),
+    );
+
     it('responds with error - body "valor" error ', async () =>
         request(app)
             .post('/clientes/1/transacoes')
@@ -84,5 +101,6 @@ describe('POST /clientes/:id/transacoes', () => {
                 expect(response.body).toHaveProperty('message');
             }),
     );
+
 });
 
