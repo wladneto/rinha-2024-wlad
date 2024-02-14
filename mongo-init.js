@@ -2,8 +2,6 @@ db = db.getSiblingDB('Rinha');
 
 db.createCollection('clientes');
 
-db.createCollection('transacoes');
-
 db.clientes.insertMany([
     {
         clienteid: 1,
