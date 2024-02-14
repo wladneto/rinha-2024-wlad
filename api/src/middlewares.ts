@@ -37,7 +37,8 @@ export function validateRequest(validators: RequestValidators) {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        res.status(422);
+        const jsonErrorArray = JSON.parse(error.message);
+        res.status(422).json({ 'message': 'Error: ' + jsonErrorArray[0].message });
       }
       next(error);
     }
