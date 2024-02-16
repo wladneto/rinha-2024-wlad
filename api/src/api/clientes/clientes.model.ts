@@ -3,7 +3,8 @@ import { WithId } from 'mongodb';
 import { db } from '../../db'
 
 export const Transacao = z.object({
-    valor: z.number(),
+    clienteid: z.number().optional(),
+    valor: z.number().int().positive(),
     tipo: z.enum(['c', 'd']),
     descricao: z.string().max(10).min(1),
     realizada_em: z.string().optional()
@@ -11,15 +12,14 @@ export const Transacao = z.object({
 
 const Cliente = z.object({
     clienteid: z.number().min(1),
-    limite: z.number(),
-    saldo: z.number(),
-    transacoes: z.array(Transacao)
+    limite: z.number().int(),
+    saldo: z.number().int()
 });
 
 const SaldoResponse = z.object({
-    total: z.number(),
+    total: z.number().int(),
     data_extrato: z.string(),
-    limite: z.number()
+    limite: z.number().int()
 });
 
 const ExtractResponse = z.object({
@@ -37,4 +37,6 @@ export type Transacao = z.infer<typeof Transacao>;
 export type ExtractResponse = z.infer<typeof ExtractResponse>
 export type TransactionResponse = z.infer<typeof TransactionResponse>
 export type ClienteWithId = WithId<Cliente>;
+export type TransacaoWithId = WithId<Transacao>;
 export const Clientes = db.collection<Cliente>('clientes');
+export const Transacoes = db.collection<Transacao>('transacoes');

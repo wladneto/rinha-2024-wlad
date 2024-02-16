@@ -42,3 +42,4 @@ yarn.lock
 
 # docker local
 .docker
+docker-entrypoint-initdb.d/
