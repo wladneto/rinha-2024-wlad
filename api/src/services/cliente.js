@@ -2,6 +2,7 @@ const { Cliente } = require('../models/index')
 
 
 const clienteService = {
+
     create: ({saldo, limite}) => new Promise( async(resolve, reject) => {
         try {
             const data = await Cliente.create({
@@ -14,6 +15,8 @@ const clienteService = {
             reject(error)
         }
     })
+
+    
 }
 
 module.exports = clienteService;
