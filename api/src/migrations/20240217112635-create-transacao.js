@@ -14,7 +14,7 @@ module.exports = {
         validate: {
           isInt: true
         }
-        
+
       },
       valor: {
         type: Sequelize.INTEGER,
@@ -25,21 +25,17 @@ module.exports = {
       tipo: {
         type: Sequelize.STRING,
         validate: {
-          len:[1,1],
+          len: [1, 1],
           isIn: [['c', 'd']]
         }
       },
       descricao: {
         type: Sequelize.STRING,
         validate: {
-          len: [1,10]
+          len: [1, 10]
         }
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true
       }
     },
-    valor: { 
+    valor: {
       type: DataTypes.INTEGER,
       validate: {
         isInt: true,
@@ -29,19 +29,21 @@ module.exports = (sequelize, DataTypes) => {
     tipo: {
       type: DataTypes.STRING,
       validate: {
-        len:[1,1],
+        len: [1, 1],
         isIn: [['c', 'd']]
       }
     },
     descricao: {
       type: DataTypes.STRING,
-      validate:{
-        len: [1,10]
+      validate: {
+        len: [1, 10]
       }
     }
   }, {
     sequelize,
     modelName: 'Transacao',
+    timestamps: true,
+    updatedAt: false
   });
   return Transacao;
 };

@@ -3,17 +3,6 @@ const dbConfig  = require('./src/config/config')
 
 
 const DB_NAME = process.env.DB_NAME || 'rinha';
-// const DB_USER = process.env.DB_USER || 'user';
-// const DB_PASS = process.env.DB_PASS || 'password';
-// const DB_HOST = process.env.DB_HOST || 'localhost';
-
-
-// const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-//     host: DB_HOST,
-//     dialect: 'mysql',
-//     logging: false
-// });
-
 
 const conf = dbConfig.development;
 
@@ -25,8 +14,13 @@ const sequelize = new Sequelize(
     host: conf.host,
     dialect: "mysql",
     operatorsAliases: 0,
-    logging: 0
+    logging: 0,
+    pool: {
+      max: 20,
+      min: 5
+    }
   }
+  
 );
 
 sequelize.sync();

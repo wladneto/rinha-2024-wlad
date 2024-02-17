@@ -8,10 +8,10 @@ const clienteController = {
         try {
             const { limite, saldo } = req.body
             const data = await clienteService.create({limite: limite, saldo: saldo})
-            return res.status(201).json({data})
+            return res.status(201).json(data)
             
         } catch (error) {
-            return res.status(500).json({message: error?.message})
+            return res.status(error?.status || 500).json({message: error?.message})
         }
     },
 
@@ -20,10 +20,10 @@ const clienteController = {
             const { clienteid } = req.params
             const { valor, tipo, descricao } = req.body
             const data = await transacaoService.create({clienteid, valor, tipo, descricao})
-            return res.status(201).json({data})
+            return res.status(200).json(data)
             
         } catch (error) {
-            return res.status(500).json({message: error?.message})
+            return res.status(error?.status || 500).json({message: error?.message})
         }
     },
 
@@ -31,15 +31,12 @@ const clienteController = {
         try { 
             const { clienteid } = req.params
             const data = await extratoService.get({clienteid})
-            return res.status(200).json({data})
-            
+            return res.status(200).json(data)
+
         } catch (error) {
-            return res.status(500).json({message: error?.message})
+            return res.status(error?.status || 500).json({message: error?.message})
         }
     }
-
-
-
 
 }
 

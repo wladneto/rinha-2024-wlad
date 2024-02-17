@@ -4,64 +4,70 @@ const Op = require('sequelize');
 
 const transacaoService = {
 
-    create: ({clienteid, valor, tipo, descricao}) => new Promise( async(resolve, reject) => {
+    create: ({ clienteid, valor, tipo, descricao }) => new Promise(async (resolve, reject) => {
         try {
-            
-            const data = await Cliente.sequelize.transaction(async (t) => {
 
-                // verificar se cliente existe
-                const cliente = await Cliente.findAll({
-                    where: {
-                      id: clienteid
-                    }
-                  }, { transaction: t });
-
-                if (cliente.length === 0 ) {
-                    throw new Error("Cliente não existe");
+            // verificar se cliente existe
+            const cliente = await Cliente.findAll({
+                where: {
+                    id: clienteid
                 }
+            })
 
-                // verificar limite de acordo com saldo
-                const saldoAtualizdo = checarLimiteCliente(
-                    cliente[0].limite,
-                    cliente[0].saldo,
-                    tipo,
-                    valor
-                )
-                
-                if (saldoAtualizdo === null ) {
-                    throw new Error("Cliente não possui limite disponivel");
+            if (cliente.length === 0) {
+                const error = new Error("Cliente não existe");
+                error.status = 404
+                throw error;
+            }
+
+            // verificar limite de acordo com saldo
+            const saldoAtualizdo = checarLimiteCliente(
+                cliente[0].limite,
+                cliente[0].saldo,
+                tipo,
+                valor
+            )
+
+            if (saldoAtualizdo === null) {
+                const error = new Error("Cliente não possui limite disponivel");
+                error.status = 422
+                throw error;
+            }
+
+            // atualizar o saldo
+            const tabelaClienteAtualizada = await Cliente.update({ saldo: saldoAtualizdo }, {
+                where: {
+                    id: clienteid
                 }
-
-                // atualizar o saldo
-                await Cliente.update({ saldo: saldoAtualizdo },{
-                    where: {
-                      id: clienteid
-                    }
-                  }, { transaction: t });
-
-                // criar a transacao
-                await Transacao.create({
-                    clienteid, valor, tipo, descricao
-                  }, { transaction: t });
-            
-                return {
-                    "limite" : cliente[0].limite,
-                    "saldo" : saldoAtualizdo
-                };
-
             });
-            
-            
 
+            if (tabelaClienteAtualizada.length === 0) {
+                const error = new Error("Erro ao atualizar Tabela Cliente");
+                error.status = 500
+                throw error;
+            }
+            // criar a transacao
+            const tabelaTransacaoAtualizada = await Transacao.create({
+                clienteid, valor, tipo, descricao
+            });
 
-            resolve(data);
+            if (tabelaTransacaoAtualizada.length === 0) {
+                const error = new Error("Erro ao criar transação Tabela Transacoes");
+                error.status = 500
+                throw error;
+            }
+
+            resolve({
+                "limite": cliente[0].limite,
+                "saldo": saldoAtualizdo
+            });
 
         } catch (error) {
             reject(error)
         }
     })
 
-    
+
 
 }
 
