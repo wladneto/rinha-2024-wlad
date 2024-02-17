@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "user",
+    "password": "password",
+    "database": "rinha",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false,
+    "timezone":"-03:00"
+  },
+  "test": {
+    "username": "user",
+    "password": "password",
+    "database": "rinha",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false,
+    "timezone":"-03:00"
+  },
+  "production": {
+    "username": "user",
+    "password": "password",
+    "database": "rinha",
+    "host": "db-mysql",
+    "dialect": "mysql",
+    "logging": false,
+    "timezone":"-03:00"
+  }
+}
