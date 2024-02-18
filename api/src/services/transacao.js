@@ -20,18 +20,23 @@ const transacaoService = {
                 throw error;
             }
 
-            // verificar limite de acordo com saldo
-            const saldoAtualizdo = checarLimiteCliente(
-                cliente[0].limite,
-                cliente[0].saldo,
-                tipo,
-                valor
-            )
+            let saldoAtualizdo
+            if (tipo == 'd') {
+                // verificar se tem limite caso debito
+                saldoAtualizdo = checarLimiteCliente(
+                    cliente[0].limite,
+                    cliente[0].saldo,
+                    tipo,
+                    valor
+                )
 
-            if (saldoAtualizdo === null) {
-                const error = new Error("Cliente não possui limite disponivel");
-                error.status = 422
-                throw error;
+                if (saldoAtualizdo === null) {
+                    const error = new Error("Cliente não possui limite disponivel");
+                    error.status = 422
+                    throw error;
+                }
+            } else {
+                saldoAtualizdo = cliente[0].saldo + valor
             }
 
             // atualizar o saldo
