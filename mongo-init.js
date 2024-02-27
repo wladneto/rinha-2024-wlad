@@ -1,8 +1,8 @@
-db = db.getSiblingDB('Rinha');
+db = db.getSiblingDB('rinha');
 
 db.createCollection('clientes');
-db.createCollection('transacoes', { capped : true, size: 102400, max :100 });
-//db.createCollection('transacoes');
+//db.createCollection('transacoes', { capped : true, size: 102400, max :100 });
+db.createCollection('transacoes');
 
 db.clientes.createIndex({ "clienteid": 1 }, { unique: true });
 db.transacoes.createIndex({ "clienteid": 1 }, { unique: false });

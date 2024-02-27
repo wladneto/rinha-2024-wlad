@@ -1,15 +1,14 @@
 import { MongoClient, MongoClientOptions } from 'mongodb'
 
+require('dotenv').config();
+
 const options: MongoClientOptions = {
-    minPoolSize: 2,
-    maxPoolSize: 20
+    minPoolSize: 1,
+    maxPoolSize: 10,
 };
 
+const mongoConnection = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}?authSource=admin`
 
-const {
-    MONGO_URI = 'mongodb://user:pass@localhost/Rinha?authSource=admin',
-} = process.env
-
-export const client = new MongoClient(MONGO_URI, options); //Limita o numero de conexoes
+export const client = new MongoClient(mongoConnection, options); //Limita o numero de conexoes
 
 export const db = client.db();

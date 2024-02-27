@@ -43,3 +43,6 @@ yarn.lock
 # docker local
 .docker
 docker-entrypoint-initdb.d/
+
+# mongo local
+/volumes
